@@ -11,7 +11,7 @@
     /* 1. FIXED HEADER */
     header { position: fixed; top: 0; left: 0; width: 100%; background: #fff; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 12px 15px; border-bottom: 1px solid #edf2f7; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
     .javenyx-logo { max-width: 130px; }
-    .call-btn { background: #2a4365; color: white; border: none; padding: 10px 16px; border-radius: 20px; font-weight: bold; font-size: 13px; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .call-btn { background: linear-gradient(135deg, #2a4365 0%, #1a202c 100%); color: white; border: none; padding: 10px 16px; border-radius: 20px; font-weight: bold; font-size: 13px; text-decoration: none; display: flex; align-items: center; gap: 8px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
     
     /* Amazon-style visual Hero Banner */
     .hero-banner { background: #2a4365; color: #fff; padding: 35px 20px; border-radius: 12px; max-width: 1000px; margin: 0 auto 25px; text-align: center; }
@@ -43,31 +43,31 @@
 
   <!-- Amazon-style Hero -->
   <div class="hero-banner">
-      <h1>Curated Utilities, Day to Day.</h1>
-      <p>Explore functional everyday essentials, by Tales Print.</p>
+      <h1>Reliable. Day to Day. Ready to Ship.</h1>
+      <p>Functional utility goods, curated daily by Tales Print.</p>
   </div>
 
   <!-- LEVEL 1: Visual Category Cards -->
   <div class="cat-showcase" id="categoryShowcase">
-    <!-- Manually add the generated category card images from the mapping in Phase 2 -->
+    <!-- These placeholder URLs will generate the visual category icons derived from the Category Summary mapping. -->
     <div class="showcase-card" onclick="openCategoryPage('Kitchen & Home Utilities')">
-      <img src="https://via.placeholder.com/200x130?text=Kitchen" alt="Kitchen Utility Icon">
+      <img src="https://via.placeholder.com/200x130/e6fffa/2c7a7b?text=Kitchen" alt="Kitchen Utility Icon">
       <h3>Kitchen & Home Utilities</h3>
     </div>
     <div class="showcase-card" onclick="openCategoryPage('Organization & Storage')">
-      <img src="https://via.placeholder.com/200x130?text=Storage" alt="Storage Utility Icon">
+      <img src="https://via.placeholder.com/200x130/edf2f7/2a4365?text=Storage" alt="Storage Utility Icon">
       <h3>Organization & Storage</h3>
     </div>
     <div class="showcase-card" onclick="openCategoryPage('Beauty & Travel Essentials')">
-      <img src="https://via.placeholder.com/200x130?text=Beauty" alt="Beauty Utility Icon">
+      <img src="https://via.placeholder.com/200x130/fdf2f8/702459?text=Beauty" alt="Beauty Utility Icon">
       <h3>Beauty & Travel Essentials</h3>
     </div>
     <div class="showcase-card" onclick="openCategoryPage('Hardware & Office Supplies')">
-      <img src="https://via.placeholder.com/200x130?text=Tools" alt="Tools Utility Icon">
+      <img src="https://via.placeholder.com/200x130/fffaf0/9c4221?text=Tools" alt="Tools Utility Icon">
       <h3>Hardware & Office Supplies</h3>
     </div>
     <div class="showcase-card" onclick="openCategoryPage('Gifts & Miscellaneous')">
-      <img src="https://via.placeholder.com/200x130?text=Gifts" alt="Gifts Utility Icon">
+      <img src="https://via.placeholder.com/200x130/f0fff4/276749?text=Gifts" alt="Gifts Utility Icon">
       <h3>Gifts & Miscellaneous</h3>
     </div>
   </div>
@@ -75,13 +75,14 @@
   <!-- FIXED FOOTER -->
   <footer>
     <img src="tales-print-logo.png" alt="Tales Print Logo" class="footer-tp-logo">
-    <span>javenyx.talesprint.com</span>
+    <span>talesprint.com/javenyx</span>
   </footer>
 
-  <a href="cart.html" class="cart-btn-fixed">Cart (0)</a>
+  <a href="cart.html" class="cart-btn-fixed hidden" id="cartFixedCount">Cart (0)</a>
 
   <script src="cart.js"></script>
   <script>
+    // Initialize Local Storage Category browsing
     function openCategoryPage(catName) {
         localStorage.setItem('javenyx_explore_cat', catName);
         window.location.href = 'category.html';

@@ -3,52 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Cart | Javenyx</title>
+  <title>My Cart | Javenyx by Tales Print</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; }
-    body { background: #fdfdfd; padding: 15px; padding-top: 70px;}
-    header { position: fixed; top: 0; left: 0; width: 100%; background: #fff; z-index: 1000; display: flex; align-items: center; gap: 10px; padding: 12px 15px; border-bottom: 1px solid #edf2f7; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
-    .back-btn { background: #edf2f7; color: #2d3748; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; }
+    body { background: #fdfdfd; padding: 15px; padding-top: 70px; padding-bottom: 20px;}
     
-    .cart-wrapper { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.04); }
-    h1 { font-size: 20px; margin-bottom: 20px; color: #2a4365; }
+    header { position: fixed; top: 0; left: 0; width: 100%; background: #fff; z-index: 1000; display: flex; align-items: center; gap: 15px; padding: 12px 15px; border-bottom: 1px solid #edf2f7; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+    .back-btn { background: #edf2f7; color: #2d3748; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; text-decoration: none; }
+    .javenyx-logo { max-width: 100px; }
+    
+    .cart-wrapper { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; }
+    h1 { font-size: 20px; margin-bottom: 20px; color: #2a4365; text-align: center; }
+    
     .cart-item { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid #edf2f7; }
-    .cart-item img { width: 50px; height: 50px; object-fit: contain; }
+    .cart-item img { width: 50px; height: 50px; object-fit: contain; border-radius: 4px; border: 1px solid #e2e8f0;}
     .cart-item-details { flex: 1; }
-    .cart-item-title { font-size: 14px; font-weight: 600; color: #2d3748; }
-    .cart-item-price { font-size: 14px; color: #1a202c; font-weight: 700; }
-    .btn-remove { background: none; border: none; color: #d32f2f; font-size: 12px; font-weight: bold; cursor: pointer; }
+    .cart-item-title { font-size: 14px; font-weight: 600; color: #2d3748; line-height: 1.4;}
+    .cart-item-price { font-size: 14px; color: #1a202c; font-weight: 700; margin-top: 4px;}
+    .btn-remove { background: none; border: none; color: #d32f2f; font-size: 12px; font-weight: bold; cursor: pointer; margin-top: 6px; padding: 0;}
     
     .cart-total-area { margin-top: 25px; padding-top: 20px; border-top: 2px solid #edf2f7; }
-    .total-row { display: flex; justify-content: space-between; font-size: 16px; margin-bottom: 10px; }
-    .grand-total { font-size: 18px; font-weight: bold; color: #2a4365; }
-    .btn-checkout { display: flex; align-items: center; justify-content: center; gap: 8px; background: #25D366; color: white; text-decoration: none; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; margin-top: 20px; }
+    .total-row { display: flex; justify-content: space-between; font-size: 16px; margin-bottom: 12px; color: #718096;}
+    .grand-total { font-size: 19px; font-weight: bold; color: #1a202c; border-top: 1px solid #e2e8f0; padding-top: 12px;}
+    
+    .btn-checkout { display: flex; align-items: center; justify-content: center; gap: 8px; background: #25D366; color: white; text-decoration: none; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; margin-top: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.08); transition: background 0.1s;}
     .btn-checkout:active { background: #1eb954; transform: translateY(1px); }
+    .btn-checkout svg { width: 18px; height: 18px; fill: #fff; }
+
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
 
   <header>
-      <button class="back-btn" onclick="window.history.back()">← Back</button>
-      <img src="javenyx-logo.png" alt="Javenyx Logo" style="max-width:100px;">
+      <a class="back-btn" href="javascript:history.back()">← Back</a>
+      <img src="javenyx-logo.png" alt="Javenyx Logo" class="javenyx-logo">
   </header>
 
   <div class="cart-wrapper">
     <h1>My Shopping Cart</h1>
     <div id="cartItemsList"></div>
     
-    <div class="cart-total-area">
-        <div class="total-row"><span>Subtotal</span><span id="subtotalPrice">₹0.00</span></div>
-        <div class="total-row grand-total"><span>Total</span><span id="grandTotalPrice">₹0.00</span></div>
-        <a id="checkoutWA" class="btn-checkout hidden" href="#" target="_blank">PLACE ORDER VIA WHATSAPP</a>
+    <div class="cart-total-area hidden" id="totalArea">
+        <div class="total-row grand-total"><span>Order Total</span><span id="grandTotalPrice">₹0.00</span></div>
+        
+        <a id="checkoutWA" class="btn-checkout" href="#" target="_blank">
+            <svg viewBox="0 0 90 90"><path d="M90 43.841c0 24.213-19.779 43.841-44.182 43.841a44.256 44.256 0 01-21.352-5.425L0 90l7.975-23.582c-5.523-6.606-8.834-15.045-8.834-22.577C-.859 19.628 18.921 0 43.325 0 67.727 0 87.506 19.628 87.506 43.841zM45.9 75.149c12.236 0 22.186-9.849 22.186-22s-9.95-22.001-22.186-22.001c-12.236 0-22.186 9.849-22.186 22s9.95 22 22.186 22zM65.146 59.51c-.608 1.65-2.682 2.803-4.104 3.181-2.999.796-7.039 1.57-13.15-1.082-6.112-2.651-10.205-8.814-10.205-8.814-.928-1.237-1.713-2.731-1.713-4.223 0-1.491.785-2.986 1.713-4.223l.799-.999c.47-.588.47-.98.799-1.397.33-.417.33-.834.165-1.25-.165-.417-1.665-3.958-1.665-3.958-.33-.834-.99-1.25-1.485-1.25-.495 0-.99.417-1.485 1.25l-.799.999c-.47.588-1.142 1.34-1.472 2.158-.33.817-.66 1.635-.66 2.452 0 .817.33 1.635.66 2.452.99 2.452 3.958 7.356 8.906 11.029s11.205 6.112 11.205 6.112c.817.33 1.635.66 2.452.66.817 0 1.635-.33 2.452-.66 1.65-1.325 2.682-3.181 3.181-4.104.499-.923.66-2.062.66-2.062s0-1.139-.66-2.062a44.623 44.623 0 00-.799-.999c-.47-.588-1.319-1.25-1.814-1.25s-.99.417-1.485 1.25l-.799.999c-.47.588-.66 1.139-.66 2.062 0 .923.161 1.48.161 1.48.33.834.99 1.635 1.665 2.452l.99 1.25c.33.417.66.834 1.155.834s.825-.417 1.155-.834c.99-1.25 1.665-2.452 1.665-2.452s0-.817.33-1.635z"/></svg>
+            PLACE ORDER VIA WHATSAPP
+        </a>
     </div>
   </div>
 
   <script src="cart.js"></script>
   <script>
     async function init() {
-        const res = await fetch('products.json');
-        renderCartPage(await res.json());
+        try {
+            const res = await fetch('products.json');
+            const db = await res.json();
+            renderCartPage(db);
+        } catch (e) { console.error("Error loading cart db", e); }
     }
     init();
   </script>
