@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products | Javenyx Essentials</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; }
+    body { background: #fdfdfd; padding: 15px; padding-top: 70px; padding-bottom: 90px;}
+    
+    /* Compact Fixed Header with Back Btn */
+    header { position: fixed; top: 0; left: 0; width: 100%; background: #fff; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 12px 15px; border-bottom: 1px solid #edf2f7; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+    .header-logo-area { display: flex; align-items: center; gap: 10px; }
+    .back-btn { background: #edf2f7; color: #2d3748; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; }
+    .javenyx-logo { max-width: 100px; }
+    
+    /* Category Title & Search */
+    .nav-search-bar { max-width: 1000px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap;}
+    #selectedCatTitle { font-size: 18px; font-weight: 700; color: #1a202c; flex: 1; min-width: 200px; }
+    .nav-search input { width: 100%; padding: 11px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px;}
+
+    /* Product Grid & SELL Button */
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 15px; max-width: 1000px; margin: 0 auto; }
+    .card { background: #fff; border-radius: 12px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #f1f5f9; }
+    .card img { width: 100%; height: 160px; object-fit: contain; border-radius: 8px; margin-bottom: 12px; }
+    .card .title { font-size: 13px; font-weight: 600; margin-bottom: 8px; line-height: 1.4; color: #2d3748; min-height: 36px;}
+    .card .price { font-size: 16px; font-weight: bold; color: #1a202c; margin-bottom: 10px;}
+    
+    /* Quantity & SELL Button */
+    .qty-selector { display: flex; align-items: center; margin: 10px 0; gap: 10px; border: 1px solid #edf2f7; padding: 5px; border-radius: 20px; width: fit-content; margin-top: auto;}
+    .qty-btn { background: #fff; border: 1px solid #e2e8f0; width: 30px; height: 30px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; color: #2a4365; }
+    .qty-num { font-size: 14px; width: 25px; text-align: center; font-weight: 600; color: #1a202c; }
+    .btn-add-cart { display: block; text-align: center; background: #c79a24; color: white; text-decoration: none; padding: 10px; border-radius: 6px; font-weight: bold; font-size: 13px; border: none; }
+    .btn-add-cart:active { background: #a67e1a; transform: translateY(1px); }
+
+    footer { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; padding: 12px 15px; border-top: 1px solid #edf2f7; display: flex; align-items: center; justify-content: space-between; max-width: 100%; box-shadow: 0 -3px 10px rgba(0,0,0,0.03); z-index: 999; }
+    .footer-tp-logo { max-height: 25px; }
+    .cart-btn-fixed { position: fixed; bottom: 15px; right: 15px; background: #25D366; color: white; text-decoration: none; border-radius: 30px; padding: 15px; font-size: 14px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+    .card.out-of-stock { opacity: 0.6; pointer-events: none; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-logo-area">
+      <button class="back-btn" onclick="window.location.href='index.html'">←</button>
+      <img src="javenyx-logo.png" alt="Javenyx Logo" class="javenyx-logo">
+    </div>
+  </header>
+
+  <div class="nav-search-bar">
+      <h2 id="selectedCatTitle"></h2>
+      <div class="nav-search"><input type="text" id="searchInput" placeholder="Search..." onkeyup="globalSearch()"></div>
+  </div>
+
+  <div class="product-grid" id="productGrid"></div>
+
+  <footer>
+    <img src="tales-print-logo.png" alt="Tales Print Logo" class="footer-tp-logo">
+  </footer>
+
+  <a href="cart.html" class="cart-btn-fixed">Cart (0)</a>
+
+  <script src="cart.js"></script>
+  <script>
+    let products = [];
+    let currentCat = localStorage.getItem('javenyx_explore_cat');
+
+    async function init() {
+      document.getElementById('selectedCatTitle').textContent = currentCat;
+      const res = await fetch('products.json');
+      products = await res.json();
+      renderProducts(products.filter(p => p.cat === currentCat));
+    }
+
+    function renderProducts(items) {
+      document.getElementById('productGrid').innerHTML = items.map(p => {
+        const inStock = p.stock === "Yes";
+        return `
+        <div class="card ${inStock ? '' : 'out-of-stock'}">
+          <img src="${p.image || 'https://via.placeholder.com/170x170'}" alt="${p.title}" loading="lazy">
+          <div>
+            <div class="title">${p.title}</div>
+            <div class="price">₹${p.price.toFixed(2)}</div>
+          </div>
+          <div class="qty-selector">
+            <button class="qty-btn" onclick="updateQty(this, -1)">−</button>
+            <span class="qty-num">1</span>
+            <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
+          </div>
+          <button class="btn-add-cart" onclick="addToCart(this, ${p.sku})">${inStock ? 'Add to Cart' : 'OUT OF STOCK'}</button>
+        </div>
+      `}).join('');
+    }
+
+    init();
+  </script>
+</body>
+</html>

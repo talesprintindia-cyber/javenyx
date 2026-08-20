@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Cart | Javenyx</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; }
+    body { background: #fdfdfd; padding: 15px; padding-top: 70px;}
+    header { position: fixed; top: 0; left: 0; width: 100%; background: #fff; z-index: 1000; display: flex; align-items: center; gap: 10px; padding: 12px 15px; border-bottom: 1px solid #edf2f7; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+    .back-btn { background: #edf2f7; color: #2d3748; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; }
+    
+    .cart-wrapper { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.04); }
+    h1 { font-size: 20px; margin-bottom: 20px; color: #2a4365; }
+    .cart-item { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid #edf2f7; }
+    .cart-item img { width: 50px; height: 50px; object-fit: contain; }
+    .cart-item-details { flex: 1; }
+    .cart-item-title { font-size: 14px; font-weight: 600; color: #2d3748; }
+    .cart-item-price { font-size: 14px; color: #1a202c; font-weight: 700; }
+    .btn-remove { background: none; border: none; color: #d32f2f; font-size: 12px; font-weight: bold; cursor: pointer; }
+    
+    .cart-total-area { margin-top: 25px; padding-top: 20px; border-top: 2px solid #edf2f7; }
+    .total-row { display: flex; justify-content: space-between; font-size: 16px; margin-bottom: 10px; }
+    .grand-total { font-size: 18px; font-weight: bold; color: #2a4365; }
+    .btn-checkout { display: flex; align-items: center; justify-content: center; gap: 8px; background: #25D366; color: white; text-decoration: none; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; margin-top: 20px; }
+    .btn-checkout:active { background: #1eb954; transform: translateY(1px); }
+  </style>
+</head>
+<body>
+
+  <header>
+      <button class="back-btn" onclick="window.history.back()">← Back</button>
+      <img src="javenyx-logo.png" alt="Javenyx Logo" style="max-width:100px;">
+  </header>
+
+  <div class="cart-wrapper">
+    <h1>My Shopping Cart</h1>
+    <div id="cartItemsList"></div>
+    
+    <div class="cart-total-area">
+        <div class="total-row"><span>Subtotal</span><span id="subtotalPrice">₹0.00</span></div>
+        <div class="total-row grand-total"><span>Total</span><span id="grandTotalPrice">₹0.00</span></div>
+        <a id="checkoutWA" class="btn-checkout hidden" href="#" target="_blank">PLACE ORDER VIA WHATSAPP</a>
+    </div>
+  </div>
+
+  <script src="cart.js"></script>
+  <script>
+    async function init() {
+        const res = await fetch('products.json');
+        renderCartPage(await res.json());
+    }
+    init();
+  </script>
+</body>
+</html>
